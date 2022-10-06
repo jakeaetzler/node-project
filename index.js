@@ -1,8 +1,11 @@
 const express = require('express');
+var AWS = require('aws-sdk');
+var uuid = require('uuid');
+
 
 const app = express();
 
-const port = 80;
+const port = 5000;
 
 app.use(express.static(__dirname + '/public'));
 
