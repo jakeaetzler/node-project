@@ -27,6 +27,12 @@ a.p-card:hover {
   color:rgba(42, 169, 248, 0.8)
 }
 
+@media only screen and (max-width:749px) {
+  .parallax {
+    background-attachment: inherit;
+  }
+}
+
 /* End non-template */
 
 html {
@@ -125,7 +131,7 @@ a:hover {
   left: 0;
   width: 100%;
   display: flex;
-  align-items: stretch;
+  align-items: ;
 }
 
 .tm-welcome-title {
