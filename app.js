@@ -26,25 +26,32 @@ app.post('/', (req, res) => {
     const nemail = String(email);
     const nmessage = String(message);
 
-    const sql = ['INSERT INTO contact VALUES (\'', nname,'\', \'', nemail,'\', \'', nmessage, '\')'].join('');
+    const sql = ['INSERT INTO ContactForm VALUES (\'', nname,'\', \'', nemail,'\', \'', nmessage, '\')'].join('');
     console.log(sql);
 
 
-var con = mysql.createConnection({
-    host: "contact-db-instance-1.cx47xgllgyqu.us-east-2.rds.amazonaws.com",
-    user: "admin",
-    password: "Sparky224",
-    port: 3306,
-    database: "contact_schema"
-  });
-  con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("1 record inserted");
+    var connection = mysql.createConnection({
+        host     : process.env.RDS_HOSTNAME,
+        user     : process.env.RDS_USERNAME,
+        password : process.env.RDS_PASSWORD,
+        port     : process.env.RDS_PORT,
+        database : "contact_form"
       });
-  });
+      
+      connection.connect(function(err) {
+        if (err) {
+          console.error('Database connection failed: ' + err.stack);
+          return;
+        }
+      
+        console.log('Connected to database.');
+        
+        connection.query(sql, function (err, result, fields) {
+          if (err) throw err;
+          console.log(result);
+        });
+
+      });
 
 });
 
