@@ -22,6 +22,57 @@ app.get('/login', (req, res) => {
   res.sendFile('login.html', {root:__dirname});
 });
 
+function getContacts() {
+  var connection = mysql.createConnection({
+    host     : process.env.RDS_HOSTNAME,
+    user     : process.env.RDS_USERNAME,
+    password : process.env.RDS_PASSWORD,
+    port     : process.env.RDS_PORT,
+    database : "contact_form"
+  });
+  
+  connection.connect(function(err) {
+    if (err) {
+      console.error('Database connection failed: ' + err.stack);
+      return;
+    }
+  
+    console.log('Connected to database.');
+
+    var sql = `SELECT * FROM ContactForm`;
+    
+    connection.query(sql, function (err, result, fields) {
+      if (err) throw err;
+      console.log(result);
+    });
+  });
+
+  //Table Building Test
+  var body = document.getElementsByTagName('body')[0];
+  var tbl = document.createElement('table');
+  tbl.style.width = '100%';
+  tbl.setAttribute('border', '1');
+  var tbdy = document.createElement('tbody');
+  for (var i = 0; i < 3; i++) {
+    var tr = document.createElement('tr');
+    for (var j = 0; j < result.length; j++) {
+      if (i == 2 && j == 1) {
+        break
+      } else {
+        var td = document.createElement('td');
+        td.appendChild(document.createTextNode('\u0020'))
+        i == 1 && j == 1 ? td.setAttribute('rowSpan', '2') : null;
+        tr.appendChild(td)
+      }
+    }
+    tbdy.appendChild(tr);
+  }
+  tbl.appendChild(tbdy);
+  body.appendChild(tbl)
+
+  return body;
+}
+
 app.post('/', (req, res) => {
     const { name, email, message } = req.body;
     const { authorization } = req.headers;
@@ -93,7 +144,7 @@ app.post('/login', (req, res) => {
         res.send(`Login Denied`);
       }
       else {
-        res.send('Login Accepted');
+        res.send(`getContacts()`);
       }
 
     });
