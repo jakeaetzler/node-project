@@ -115,8 +115,9 @@ a:hover {
   font-size: 1.4rem;
 }
 
+/* VV mobile fix: min-height +100 VV*/
 .parallax-window {
-  min-height: 1100px;
+  min-height: 1200px;
   background: transparent;
 }
 
